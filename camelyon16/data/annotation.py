@@ -39,7 +39,6 @@ class Polygon(object):
 
         return np.array(self._vertices)
 
-
 class Annotation(object):
     """
     Annotation about the regions within WSI in terms of vertices of polygons.
@@ -109,7 +108,6 @@ class Annotation(object):
         else:
             return list(map(lambda x: x.vertices(), self._polygons_negative))
 
-
 class Formatter(object):
     """
     Format converter e.g. CAMELYON16 to internal json
@@ -118,8 +116,8 @@ class Formatter(object):
         """
         Convert an annotation of camelyon16 xml format into a json format.
         Arguments:
-            inxml: string, path to the input camelyon16 xml format
-            outjson: string, path to the output json format
+            inxml: string, path to the input camelyon16 xml format 某一特定xml文件的文件路径
+            outjson: string, path to the output json format  特定的某一json文件的保存路径
         """
         root = ET.parse(inxml).getroot()
         annotations_tumor = \

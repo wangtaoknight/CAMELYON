@@ -6,8 +6,8 @@
   "normalize": "True",
   "lr": 0.001,
   "momentum": 0.9,
-  "data_path_train": "/home/qianslab/likewind/github/CAMELYON16/wpatch/",
-  "data_path_valid": "/home/qianslab/likewind/github/CAMELYON16/wpatch/",
+  "data_path_train": "F:/camelyon_tumor/data_set/train/",
+  "data_path_valid": "F:/camelyon_tumor/data_set/valid/",
   "epoch": 50,
   "log_every": 5
 }

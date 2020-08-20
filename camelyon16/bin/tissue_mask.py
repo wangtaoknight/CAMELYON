@@ -7,6 +7,10 @@ import numpy as np
 import openslide
 from skimage.color import rgb2hsv
 from skimage.filters import threshold_otsu
+'''
+    获得.tif文件在特定level下的组织掩码 .npy
+'''
+
 
 sys.path.append(os.path.dirname(os.path.abspath(__file__)) + '/../../')
 
@@ -20,6 +24,13 @@ parser.add_argument('--level', default=6, type=int, help='at which WSI level'
                     ' to obtain the mask, default 6')
 parser.add_argument('--RGB_min', default=50, type=int, help='min value for RGB'
                     ' channel, default 50')
+#--------------------------------------------------------------------------------
+# 以下代码为在不改动源代码的情况下，将其改为自己需要的代码。上面的代码主要为文件路径输入函数，需要
+# 在文件路径中进行指定。因为使用命令行参数不够直观，这里在不改变源代码的情况下(主要考虑后面继续修改)，
+# 进行修改，使得其可以满足自己的需求-在代码中定义文件输入路径。同时，因为源代码为单幅路径进行转换，这
+# 里整个文件夹下.tif自动全部进行转换。wsi_path npy_path为必选参数，这里加--变为可选参数
+#           服务器处理时间预计：390s
+#--------------------------------------------------------------------------------
 
 
 def run(args):
@@ -51,8 +62,18 @@ def run(args):
 
 def main():
     args = parser.parse_args()
-    run(args)
+    #--------------------------------中间为增加的代码
+    all_wsi_path = 'F:/camelyon_tumor/tumor'
+    all_wsi_npy = 'F:/camelyon_tumor/all_npy'
+    for root,dirname,filenames in os.walk(all_wsi_path):
+        for filename in filenames:
+            args.wsi_path = os.path.join(root,filename)
+            args.npy_path = all_wsi_npy +'/'+filename.split('.')[0] + '_tissue.npy'
+            args.level = 6
+    #--------------------------------
+            run(args)
 
 
 if __name__ == '__main__':
+
     main()

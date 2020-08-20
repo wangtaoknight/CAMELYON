@@ -10,17 +10,20 @@ import sys
 import os
 import argparse
 import logging
-
 sys.path.append(os.path.dirname(os.path.abspath(__file__) + '/../../'))
 
 FEATURE_START_INDEX = 6
-
 parser = argparse.ArgumentParser(description='Train and test the wsi classification')
-parser.add_argument()
-
+parser.add_argument('--probs_map_features_train', default=None, metavar='WSI_PATH', type=str,
+                    help='Path to the input WSI file')
+parser.add_argument('--probs_map_features_test', default=None, metavar='WSI_PATH', type=str,
+                    help='Path to the input WSI file')
+parser.add_argument('--TEST_CSV_GT', default=None, metavar='WSI_PATH', type=str,
+                    help='Path to the input WSI file')
 
 def plot_roc(gt_y, prob_predicted_y):
     predictions = prob_predicted_y[:, 1]
+    gt_y = list(gt_y)
     fpr, tpr, _ = roc_curve(gt_y, predictions)
 
     roc_auc = auc(fpr, tpr)
@@ -40,7 +43,6 @@ def plot_roc(gt_y, prob_predicted_y):
     plt.grid(True, linestyle='-')
     plt.show()
 
-
 def validate(x, gt_y, clf):
     predicted_y = clf.predict(x)
     prob_predicted_y = clf.predict_proba(x)
@@ -48,7 +50,6 @@ def validate(x, gt_y, clf):
     logging.info(pd.crosstab(gt_y, predicted_y, rownames=['Actual'], colnames=['Predicted']))
 
     return predicted_y, prob_predicted_y
-
 
 def train(x, y):
     # clf = RandomForestClassifier(n_estimators=50, n_jobs=2)
@@ -65,7 +66,6 @@ def train(x, y):
 
     return clf
 
-
 def load_train_test_data(f_train, f_test, args):
     df_train = pd.read_csv(f_train)
     df_test = pd.read_csv(f_test)
@@ -74,27 +74,26 @@ def load_train_test_data(f_train, f_test, args):
     df_test_gt.at[df_test_gt[1] == 'Tumor'] = 1
     df_test_gt.at[df_test_gt[1] == 'Normal'] = 0
     # print(df_test_gt)
-    test_gt = df_test_gt.ix[:, 1]
-
+    test_gt = df_test_gt.iloc[:, 1]
     n_columns = len(df_train.columns)
-
     feature_column_names = df_train.columns[FEATURE_START_INDEX:n_columns - 1]
     label_column_name = df_train.columns[n_columns - 1]
-
     return df_train[feature_column_names], df_train[label_column_name], df_test[feature_column_names], test_gt
 
-
 def run(args):
-    train_x, train_y, test_x, test_y = load_train_test_data(args.probs_map_features_train,
-                                                            args.probs_map_features_test)
+    train_x, train_y, test_x, test_y = load_train_test_data(f_train=args.probs_map_features_train,
+                                                            f_test=args.probs_map_features_test,args= args)
     model = train(train_x, train_y)
     predict_y, prob_predict_y = validate(test_x, test_y, model)
     plot_roc(test_y, prob_predict_y)
 
 def main():
     logging.basicConfig(level=logging.INFO)
-
     args = parser.parse_args()
+    args.probs_map_features_train ='G:/feature_csv/probs_map_features_train.csv'
+    args.probs_map_features_test = 'G:/feature_csv/probs_map_features_test.csv'
+    args.TEST_CSV_GT = 'G:/feature_csv/TEST_CSV_GT.csv'
+
     run(args)
 
 

@@ -4,22 +4,20 @@ import argparse
 import logging
 import json
 import time
-
-
 import numpy as np
+import glob
 import torch
 from torch.utils.data import DataLoader
 from torch.autograd import Variable
 from torchvision import models
 from torch import nn
-
 sys.path.append(os.path.dirname(os.path.abspath(__file__)) + '/../../')
-
 torch.manual_seed(0)
 torch.cuda.manual_seed_all(0)
-
 from camelyon16.data.wsi_producer import WSIPatchDataset  # noqa
-
+#----------------------------------------------------------------------------------------------------
+#本部分代码的作用为利用训练得到的模型生成每一个概率图，即热力图
+#----------------------------------------------------------------------------------------------------
 
 parser = argparse.ArgumentParser(description='Get the probability map of tumor'
                                  ' patch predictions given a WSI')
@@ -42,14 +40,12 @@ parser.add_argument('--eight_avg', default=0, type=int, help='if using average'
                     ' of the 8 direction predictions for each patch,'
                     ' default 0, which means disabled')
 
-
 def chose_model(mod):
     if mod == 'resnet18':
         model = models.resnet18(pretrained=False)
     else:
         raise Exception("I have not add any models. ")
     return model
-
 
 def get_probs_map(model, dataloader):
     probs_map = np.zeros(dataloader.dataset._mask.shape)
@@ -81,7 +77,6 @@ def get_probs_map(model, dataloader):
 
     return probs_map
 
-
 def make_dataloader(args, cnn, flip='NONE', rotate='NONE'):
     batch_size = cnn['batch_size'] * 2
     num_workers = args.num_workers
@@ -94,7 +89,6 @@ def make_dataloader(args, cnn, flip='NONE', rotate='NONE'):
         batch_size=batch_size, num_workers=num_workers, drop_last=False)
 
     return dataloader
-
 
 def run(args):
     os.environ["CUDA_VISIBLE_DEVICES"] = args.GPU
@@ -154,11 +148,25 @@ def run(args):
 
     np.save(args.probs_map_path, probs_map)
 
-
 def main():
     args = parser.parse_args()
-    run(args)
+    #-----------------------------------------------------------------------
+    wsi_path = 'wsi的路径'      # 要生成热力图的wsi的路径
+    args.ckpt_path = ''         #ckpt文件的路径
+    args.cnn_path = ''          #cnn文件的路径.json
+    mask_path = ''              #mask文件夹的路径
+    probs_map_path = ''         #待保存热力图的目标文件夹
+    paths = glob.glob(wsi_path +'.tif')
+    for path in paths:
+        args.wsi_path = path
+        wsi_name = path.split('\\')[-1]
+        args.mask_path = mask_path +wsi_name.split('.')[0] +'_tissue.npy'
+        args.probs_map_path = probs_map_path + wsi_name.split('.')[0] + '_probs_map.npy'
+    #-----------------------------------------------------------------------
+        run(args)
 
 
 if __name__ == '__main__':
+    st_t = time.time()
     main()
+    print('All time Used in this Process:%ds'%(time.time()-st_t))

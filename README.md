@@ -9,7 +9,7 @@
 
 这个仓库主要包含了基于深度学习的癌症检测的源代码框架，开发用于从全幻灯片癌症病理图像（WSI）中识别癌转移。该框架成功应用于Camelyon‘16 grand challenge的数据集。我开发本项目主要是提供一个关于WSI检测的解决方案。
 
-![](https://github.com/ilikewind/CAMELYON16/blob/master/docs/test_own.jpg)
+![](F:/camelyon_tumor/tumor/cc.jpg)
 
 ## Notes
 
@@ -31,7 +31,7 @@
 
 ### 全幻灯片图像 (Whole slide images)
 
-数据主要是来自[Camelyon16](https://camelyon16.grand-challenge.org/)挑战赛的*.tif格式的全幻灯片图像 (WSI)。您可以在[Camelyon16](https://camelyon16.grand-challenge.org/)上下载免费数据，不过建议您应当在获得官方批准之后再使用该数据。注意，一张全幻灯片图像通常在0级为~100k×100k像素，在磁盘上有1GB+的储存量。比赛数据一共有700张WSI，总计约700GB+数据，所以要确保有足够的磁盘空间。用于训练的肿瘤WSI命名为Tumor\_×××.tif，其中xxx的范围是001到110。用于训练的正常WSI名为Normal\_xxx.tif，其中xxx的范围是从001到160。用于测试的WSI名为Test\_xxx.tif，其中xxx的范围从001到130。
+数据主要是来自[Camelyon16](https://camelyon16.grand-challenge.org/) 挑战赛的*.tif格式的全幻灯片图像 (WSI)。您可以在[Camelyon16](https://camelyon16.grand-challenge.org/) 上下载免费数据，不过建议您应当在获得官方批准之后再使用该数据。注意，一张全幻灯片图像通常在0级为~100k×100k像素，在磁盘上有1GB+的储存量。比赛数据一共有700张WSI，总计约700GB+数据，所以要确保有足够的磁盘空间。用于训练的肿瘤WSI命名为Tumor\_×××.tif，其中xxx的范围是001到110。用于训练的正常WSI名为Normal\_xxx.tif，其中xxx的范围是从001到160。用于测试的WSI名为Test\_xxx.tif，其中xxx的范围从001到130。
 
 ![](https://github.com/ilikewind/CAMELYON16/blob/master/docs/datavisul.png)
 

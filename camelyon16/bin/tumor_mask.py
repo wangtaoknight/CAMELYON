@@ -8,15 +8,22 @@ import openslide
 import cv2
 import json
 
+#------------------------------------------------------------------------------------
+'''利用json、tif获取癌症掩码npy。这里将单幅转换改为路径下转换。
+   姑且猜测作者之前已经做好
+'''
+
+#------------------------------------------------------------------------------------
+
 sys.path.append(os.path.dirname(os.path.abspath(__file__)) + '/../../')
 
 parser = argparse.ArgumentParser(description='Get tumor mask of tumor-WSI and '
                                              'save it in npy format')
-parser.add_argument('wsi_path', default=None, metavar='WSI_PATH', type=str,
+parser.add_argument('--wsi_path', default=None, metavar='WSI_PATH', type=str,
                     help='Path to the WSI file')
-parser.add_argument('json_path', default=None, metavar='JSON_PATH', type=str,
+parser.add_argument('--json_path', default=None, metavar='JSON_PATH', type=str,
                     help='Path to the JSON file')
-parser.add_argument('npy_path', default=None, metavar='NPY_PATH', type=str,
+parser.add_argument('--npy_path', default=None, metavar='NPY_PATH', type=str,
                     help='Path to the output npy mask file')
 parser.add_argument('--level', default=6, type=int, help='at which WSI level'
                     ' to obtain the mask, default 6')
@@ -52,9 +59,19 @@ def run(args):
 
 def main():
     logging.basicConfig(level=logging.INFO)
-
     args = parser.parse_args()
-    run(args)
+    #------------------------------------------------------
+    wsi_path = 'F:/camelyon_tumor/train/tumor'
+    json_path = 'F:/camelyon_tumor/json'
+    mask_npys = 'F:/camelyon_tumor/mask_npy'
+    for root,dirname,filenames in os.walk(wsi_path):
+        for filename in filenames:
+            args.wsi_path = os.path.join(root,filename)
+            args.json_path = json_path +'/'+filename.split('.')[0]+'.json'
+            args.npy_path = mask_npys +'/'+ filename.split('.')[0]+'_tumor.npy'
+
+    #------------------------------------------------------
+            run(args)
 
 if __name__ == "__main__":
     main()

@@ -41,7 +41,7 @@ class ImageDataset(Dataset):
 
             for root, _, fnames in sorted(os.walk(d)):
                 for fname in sorted(fnames):
-                    if fname.split('.')[-1] == 'png':
+                    if fname.split('.')[-1] == 'jpg':
                         path = os.path.join(root, fname)
                         item = (path, class_to_idx[target])
                         self._items.append(item)

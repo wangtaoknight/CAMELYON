@@ -23,9 +23,9 @@ torch.cuda.manual_seed_all(0)
 
 
 parser = argparse.ArgumentParser(description='Train model')
-parser.add_argument('cnn_path', default=None, metavar='CNN_PATH', type=str,
+parser.add_argument('--cnn_path', default=None, metavar='CNN_PATH', type=str,
                     help='Path to the config file in json format')
-parser.add_argument('save_path', default=None, metavar='SAVE_PATH', type=str,
+parser.add_argument('--save_path', default=None, metavar='SAVE_PATH', type=str,
                     help='Path to the saved models')
 parser.add_argument('--num_workers', default=2, type=int, help='number of'
                     ' workers for each data loader, default 2.')
@@ -136,12 +136,12 @@ def run(args):
 
     os.environ["CUDA_VISIBLE_DEVICES"] = args.device_ids
     num_GPU = len(args.device_ids.split(','))
-    batch_size_train = cnn['batch_size'] * num_GPU
-    batch_size_valid = cnn['batch_size'] * num_GPU
-    num_workers = args.num_workers * num_GPU
+    batch_size_train = cnn['batch_size'] * num_GPU  #24*2
+    batch_size_valid = cnn['batch_size'] * num_GPU  #24*2
+    num_workers = args.num_workers * num_GPU        #2*2
 
-    model = chose_model(cnn)
-    fc_features = model.fc.in_features
+    model = chose_model(cnn)  #mode:resnet18
+    fc_features = model.fc.in_features  #fc_features:512
     model.fc = nn.Linear(fc_features, 1) # 须知
     model = DataParallel(model, device_ids=None)
     model = model.cuda()
@@ -160,11 +160,11 @@ def run(args):
                                  cnn['normalize'])
 
     dataloader_train = DataLoader(dataset_train,
-                                  batch_size=batch_size_train,
-                                  num_workers=num_workers)
+                                  batch_size=batch_size_train,  #2*24
+                                  num_workers=num_workers)      #2*2
     dataloader_valid = DataLoader(dataset_valid,
-                                  batch_size=batch_size_valid,
-                                  num_workers=num_workers)
+                                  batch_size=batch_size_valid,  # 2*24
+                                  num_workers=num_workers)      # 2*2
 
     summary_train = {'epoch': 0, 'step': 0}
     summary_valid = {'loss': float('inf'), 'acc': 0}
@@ -209,8 +209,12 @@ def run(args):
 
 def main():
     logging.basicConfig(level=logging.INFO)
-
     args = parser.parse_args()
+    #------------------------------------------------------------------
+    args.cnn_path = 'F:/GitHub/CAMELYON/camelyon16/configs/cnn.json'
+    args.save_path = 'F:/camelyon_tumor/result_train/'
+
+    #------------------------------------------------------------------
     run(args)
 
 

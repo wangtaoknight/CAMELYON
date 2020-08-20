@@ -1,13 +1,14 @@
 import sys
 import os
 import argparse
-
 import numpy as np
 from skimage import filters
-
+#---------------------------------------------------------------------------------
+# 接口: 根据对测试文件得到的.npy文件生成对应.csv文件
+# 功能： 从预测得到的npy概率图得到的肿瘤预测信息中(level 6)，提取其对应在0级下咋肿瘤预测坐标
+# 这里分为肿瘤，非肿瘤的默认threshhold是0.5
+#---------------------------------------------------------------------------------
 sys.path.append(os.path.dirname(os.path.abspath(__file__)) + '/../../')
-
-
 parser = argparse.ArgumentParser(description='Generate predicted coordinates'
                                  ' from probability map of tumor patch'
                                  ' predictions, using non-maximal suppression')
@@ -26,7 +27,6 @@ parser.add_argument('--prob_thred', default=0.5, type=float,
 parser.add_argument('--sigma', default=0.0, type=float,
                     help='sigma for Gaussian filter smoothing, default 0.0,'
                     ' which means disabled')
-
 
 def run(args):
     probs_map = np.load(args.probs_map_path)
@@ -55,7 +55,6 @@ def run(args):
                 probs_map[x, y] = 0
 
     outfile.close()
-
 
 def main():
     args = parser.parse_args()

@@ -75,7 +75,6 @@ def compute_features(extractor):
 
     return features
 
-
 def run(args):
     slide_path = args.wsi_path
 
