@@ -2,14 +2,17 @@ import os
 import sys
 import logging
 import argparse
-
 import numpy as np
-# 在癌症区域中，随机获取坐标点，然后将其保存为txt文本中.原代码前三个为必须输入参数。现改为可选参数。
-# 根据掩码.npy得到正常区域和不正常区域的采样点的点集，存于txt中
-# 以便在代码中输入固定的文件夹的位置
-# 输入为**tumor.npy所在的文件夹  预计运行时间2s
-sys.path.append(os.path.join(os.path.abspath(__file__), "/../../"))
+# 1. 利用掩码，随机获取坐标点，然后将其保存为txt文本中.原代码前三个为必须输入参数。现改为可选参数。
+# 2. 根据掩码.npy得到正常区域和不正常区域的采样点的点集，存于txt中
+# 3. 输入为**tumor.npy/non-tumor.py所在的文件夹  预计运行时间2s
+# 4. 默认生成1000个点(patch)，如需更改，在main()中修改即可。
+# 5. 默认都为level 6下，谨慎修改
+#   参考输入格式：
+#       mask_paths = 'path of mask-tumor'
+#       txt_paths = 'path of txt'
 
+sys.path.append(os.path.join(os.path.abspath(__file__), "/../../"))
 parser = argparse.ArgumentParser(description="Get center points of patches "
                                              "from mask")
 parser.add_argument("mask_path", default=None, metavar="MASK_PATH", type=str,
@@ -64,12 +67,12 @@ def main():
     #----------------------------------------------------------------------------------------------
     mask_paths = 'path of mask-tumor'
     txt_paths = 'path of txt'
+
     for root,dirname,filenames in os.walk(mask_paths):
         for filename in filenames:
             args.mask_path = os.path.join(root,filename)
             args.txt_path = txt_paths +'/'+ filename.split('.')[0] +'_train_spot.txt'
             args.patch_number = 1000
-
     #----------------------------------------------------------------------------------------------
             run(args)
 

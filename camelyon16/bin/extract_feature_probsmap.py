@@ -1,3 +1,4 @@
+import glob
 import os
 import sys
 import logging
@@ -6,18 +7,28 @@ import openslide
 import numpy as np
 import pandas as pd
 import cv2
+#-----------------------------------------------------------------------------------------------------------------------
+# 功能：对输入的wsi(.tif利用生成概率图，也即热力图，提取features)
+#   参考输入格式：(main()中自定义修改)
+#         wsi_paths = '/home/public2/Lan/deepslide/input/test/'    # 测试WSI所在的路径
+#         prob_map_paths = '/home/public2/Lan/data_camelyon16/probs_map/test/'    #对应概率图的保存文件夹 .npy文件
+#         feature_paths = '/home/public2/Lan/data_camelyon16/feature_csv/test_feature/' #保存提取到的特征
+#   此代码执行完后要将所有的特征文件(一个wsi对应一个.csv文件)，合并在一起，组成特征集，保存为一个.csv文件！！！！！！！！！！！！！！！！！！！
+#   合并的特征的函数： ./data/move_json.py 中的bian_li()函数
+#-----------------------------------------------------------------------------------------------------------------------
+sys.path.append(os.path.dirname(os.path.abspath(__file__)) + '/../../')
 
-sys.path.append(os.path.dirname(os.path.abspath(__file__) + '/../../'))
-
+# from camelyon16.data.wsi_producer import WSIPatchDataset  # noqa
 from camelyon16.data.probs_ops import extractor_features
+
 
 parser = argparse.ArgumentParser(description='Extract features from probability map'
                                              'for slide classification')
-parser.add_argument('probs_map_path', default=None, metavar='PROBS MAP PATH',
+parser.add_argument('--probs_map_path', default=None, metavar='PROBS MAP PATH',
                     type=str, help='Path to the npy probability map ')
-parser.add_argument('wsi_path', default=None, metavar='WSI PATH',
+parser.add_argument('--wsi_path', default=None, metavar='WSI PATH',
                     type=str, help='Path to the whole slide image. ')
-parser.add_argument('feature_path', default=None, metavar='FEATURE PATH',
+parser.add_argument('--feature_path', default=None, metavar='FEATURE PATH',
                     type=str, help='Path to the output features file')
 
 probs_map_feature_names = ['region_count', 'ratio_tumor_tissue', 'largest_tumor_area', 'longest_axis_largest_tumor',
@@ -27,7 +38,6 @@ probs_map_feature_names = ['region_count', 'ratio_tumor_tissue', 'largest_tumor_
                            'eccentricity_skew', 'eccentricity_kurt', 'max_extent', 'mean_extent', 'extent_variance',
                            'extent_skew', 'extent_kurt', 'max_solidity', 'mean_solidity', 'solidity_variance',
                            'solidity_skew', 'solidity_kurt', 'label']
-
 
 def compute_features(extractor):
     features = []  # 总的特征
@@ -95,12 +105,23 @@ def run(args):
     df = (pd.DataFrame(data=features)).T
     df.to_csv(args.feature_path, index=False, sep=',')
 
-
 def main():
     logging.basicConfig(level=logging.INFO)
-
     args = parser.parse_args()
-    run(args)
+    #-------------------------------------------------------------------------------------------------------------------
+    wsi_paths = '/home/public2/Lan/deepslide/input/test/'
+    prob_map_paths = '/home/public2/Lan/data_camelyon16/probs_map/test/'
+    feature_paths = '/home/public2/Lan/data_camelyon16/feature_csv/test_feature/'
+
+    paths = glob.glob(prob_map_paths+ '*.npy')
+    for path in paths:
+        args.probs_map_path = path
+        name = path.split('/')[-1]
+        args.wsi_path = wsi_paths + 'test_'+ name.split('_')[1]+ '.tif'
+        args.feature_path = feature_paths +'test_'+ name.split('_')[1]+ '.csv'
+
+    #-------------------------------------------------------------------------------------------------------------------
+        run(args)
 
 
 if __name__ == '__main__':

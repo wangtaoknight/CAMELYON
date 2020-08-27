@@ -8,12 +8,15 @@ import openslide
 import cv2
 import json
 
-#------------------------------------------------------------------------------------
-'''利用json、tif获取癌症掩码npy。这里将单幅转换改为路径下转换。
-   姑且猜测作者之前已经做好
+#-----------------------------------------------------------------------------------------------------------
+'''利用json注释、tif病理图像，获取癌症掩码npy。以便进一步在在癌症区域中生成产生patch所需要用以定位的点
+这里将单幅转换改为文件下遍历转换。在main()函数中输入
+输入示范:
+    wsi_path = 'F:/camelyon_tumor/train/tumor'
+    json_path = 'F:/camelyon_tumor/json'
+    mask_npys = 'F:/camelyon_tumor/mask_npy'
 '''
-
-#------------------------------------------------------------------------------------
+#-----------------------------------------------------------------------------------------------------------
 
 sys.path.append(os.path.dirname(os.path.abspath(__file__)) + '/../../')
 
@@ -60,7 +63,7 @@ def run(args):
 def main():
     logging.basicConfig(level=logging.INFO)
     args = parser.parse_args()
-    #------------------------------------------------------
+    #-------------------------------------------------------------------------------------------------------------------
     wsi_path = 'F:/camelyon_tumor/train/tumor'
     json_path = 'F:/camelyon_tumor/json'
     mask_npys = 'F:/camelyon_tumor/mask_npy'
@@ -69,8 +72,7 @@ def main():
             args.wsi_path = os.path.join(root,filename)
             args.json_path = json_path +'/'+filename.split('.')[0]+'.json'
             args.npy_path = mask_npys +'/'+ filename.split('.')[0]+'_tumor.npy'
-
-    #------------------------------------------------------
+    #-------------------------------------------------------------------------------------------------------------------
             run(args)
 
 if __name__ == "__main__":

@@ -27,7 +27,7 @@
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/camelyon16/bin/wsi_classification.py" />
-    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
+    <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
   </component>
   <component name="RunManager" selected="Python.move_json">
     <configuration name="generic" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
@@ -199,6 +199,8 @@
       <workItem from="1597564174535" duration="12799000" />
       <workItem from="1597626502826" duration="10136000" />
       <workItem from="1597735142026" duration="175000" />
+      <workItem from="1598511862067" duration="915000" />
+      <workItem from="1598512836358" duration="6041000" />
     </task>
     <servers />
   </component>
@@ -266,29 +268,18 @@
     <state width="2517" height="492" key="GridCell.Tab.1.right/0.0.1536.824@0.0.1536.824" timestamp="1597328675100" />
     <state width="1877" height="348" key="GridCell.Tab.1.right/0.0.2560.1400/-1920.0.1920.1040@-1920.0.1920.1040" timestamp="1597485219953" />
     <state width="2517" height="260" key="GridCell.Tab.1.right/0.0.2560.1400/-1920.0.1920.1040@0.0.2560.1400" timestamp="1597584635005" />
-    <state x="781" y="344" key="SettingsEditor" timestamp="1596793029778">
+    <state x="406" y="535" key="SettingsEditor" timestamp="1598512947560">
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
-    <state x="781" y="344" key="SettingsEditor/0.0.2560.1400/-1920.0.1920.1040@0.0.2560.1400" timestamp="1596793029778" />
+    <state x="406" y="535" key="SettingsEditor/0.0.2560.1400/-1920.0.1920.1040@0.0.2560.1400" timestamp="1598512947560" />
     <state x="855" y="200" width="881" height="1028" maximized="true" key="dock-window-1" timestamp="1597487669060">
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
     <state x="855" y="200" width="881" height="1028" maximized="true" key="dock-window-1/0.0.2560.1400/-1920.0.1920.1040@-1920.0.1920.1040" timestamp="1597487669060" />
-    <state x="1041" y="573" width="618" height="283" key="org.intellij.images.editor.actions.BackgroundImageDialog" timestamp="1596792961654">
+    <state x="1041" y="573" width="628" height="285" key="org.intellij.images.editor.actions.BackgroundImageDialog" timestamp="1598511912057">
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
-    <state x="1041" y="573" width="618" height="283" key="org.intellij.images.editor.actions.BackgroundImageDialog/0.0.2560.1400/-1920.0.1920.1040@0.0.2560.1400" timestamp="1596792961654" />
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/camelyon16/bin/train.py</url>
-          <line>127</line>
-          <option name="timeStamp" value="2" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
+    <state x="1041" y="573" width="628" height="285" key="org.intellij.images.editor.actions.BackgroundImageDialog/0.0.2560.1400/-1920.0.1920.1040@0.0.2560.1400" timestamp="1598511912057" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/CAMELYON$tumor_mask.coverage" NAME="tumor_mask Coverage Results" MODIFIED="1597138559888" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/camelyon16/bin" />

@@ -4,7 +4,6 @@ import argparse
 import logging
 import json
 import time
-
 import torch
 from torch.utils.data import DataLoader
 from torch.autograd import Variable
@@ -12,15 +11,17 @@ from torch.nn import BCEWithLogitsLoss, DataParallel
 from torch.optim import SGD
 from torchvision import models
 from torch import nn
-
 from tensorboardX import SummaryWriter
-
+#-----------------------------------------------------------------------------------------------------------------------
+# 本文件为训练模型代码，
+#         args.cnn_path = 'F:/GitHub/CAMELYON/camelyon16/configs/cnn.json'   模型所需的配置信息，查看后修改。
+#                                                                            训练文件夹的路径，也在此定义。分为train，val两个
+#         args.save_path = 'F:/camelyon_tumor/result_train/'  保存训练模型的结果
+#------------------------------------------------------------------------------------------------------------ Authour：WT
 sys.path.append(os.path.dirname(os.path.abspath(__file__)) + '/../../')
-
 from camelyon16.data.image_producer import ImageDataset
 torch.manual_seed(0)
 torch.cuda.manual_seed_all(0)
-
 
 parser = argparse.ArgumentParser(description='Train model')
 parser.add_argument('--cnn_path', default=None, metavar='CNN_PATH', type=str,
@@ -33,14 +34,12 @@ parser.add_argument('--device_ids', default='0', type=str, help='comma'
                     ' separated indices of GPU to use, e.g. 0,1 for using GPU_0'
                     ' and GPU_1, default 0.')
 
-
 def chose_model(cnn):
     if cnn['model'] == 'resnet18':
         model = models.resnet18(pretrained=False)
     else:
         raise Exception("I have not add any models. ")
     return model
-
 
 def train_epoch(summary, summary_writer, cnn, model, loss_fn, optimizer,
                 dataloader_train):
@@ -89,7 +88,6 @@ def train_epoch(summary, summary_writer, cnn, model, loss_fn, optimizer,
 
     return summary
 
-
 def valid_epoch(summary, model, loss_fn,
                 dataloader_valid):
     model.eval()
@@ -122,7 +120,6 @@ def valid_epoch(summary, model, loss_fn,
     summary['acc'] = acc_sum / steps
 
     return summary
-
 
 def run(args):
     with open(args.cnn_path, 'r') as f:
@@ -210,11 +207,11 @@ def run(args):
 def main():
     logging.basicConfig(level=logging.INFO)
     args = parser.parse_args()
-    #------------------------------------------------------------------
+    #-------------------------------------------------------------------------------------------------------------------
     args.cnn_path = 'F:/GitHub/CAMELYON/camelyon16/configs/cnn.json'
     args.save_path = 'F:/camelyon_tumor/result_train/'
 
-    #------------------------------------------------------------------
+    #-------------------------------------------------------------------------------------------------------------------
     run(args)
 
 

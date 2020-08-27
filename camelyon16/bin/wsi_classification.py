@@ -11,6 +11,13 @@ import os
 import argparse
 import logging
 sys.path.append(os.path.dirname(os.path.abspath(__file__) + '/../../'))
+#-----------------------------------------------------------------------------------------------------------------------
+# 功能: 利用得到的特征训练特征分类器，并在测试集(测试集得到的特征集)进行测试
+# 输入参考：
+#         args.probs_map_features_train = 'G:/feature_csv/probs_map_features_train.csv'   训练集特征
+#         args.probs_map_features_test = 'G:/feature_csv/probs_map_features_test.csv'     测试集的特征集
+#         args.TEST_CSV_GT = 'G:/feature_csv/TEST_CSV_GT.csv'                             测试集的真实标签(用以评价模型的预测)
+#-----------------------------------------------------------------------------------------------------------------------
 
 FEATURE_START_INDEX = 6
 parser = argparse.ArgumentParser(description='Train and test the wsi classification')
@@ -95,7 +102,6 @@ def main():
     args.TEST_CSV_GT = 'G:/feature_csv/TEST_CSV_GT.csv'
 
     run(args)
-
 
 if __name__ == '__main__':
     main()

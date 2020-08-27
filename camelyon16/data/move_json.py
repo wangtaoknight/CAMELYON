@@ -45,16 +45,16 @@ def copy_file(sr_path,aim_path):
 
 def bian_li():
     # 此程序将分离的.csv文件中的特征合在一起
-    sr_path = 'G:/feature_csv/train_features/'
-    aim_path = 'G:/feature_csv/'
-    filename = 'train_features.csv'
+    sr_path = 'G:/feature_csv/train_features/'  # 要和并的.csv特征集
+    aim_path = 'G:/feature_csv/'                # 保存的文件夹
+    filename = 'train_features.csv'           # 合并之后的文件名
+
     paths = glob.glob(sr_path+'\\*.csv')
     fir_file = pd.read_csv( paths[0])
     fir_file.to_csv(aim_path+ '/'+ filename,encoding="utf_8_sig",index=False)
     for i in range(1,len(paths)):
         fir_file = pd.read_csv(paths[i],index_col=False)
         fir_file.to_csv(aim_path+ '/'+ filename,encoding="utf_8_sig",index=False, mode='a+',header=None)
-
 
 def show_heatmap(tu_path):
     heat = np.load(tu_path)
